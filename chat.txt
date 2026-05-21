@@ -1,0 +1,2 @@
+claude --resume "btw: llevas trabajando un buen tiempo puedes decirme que estas haciendo?"
+

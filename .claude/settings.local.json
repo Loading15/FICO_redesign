@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude plugin *)",
+      "Bash(npx skills@latest *)",
+      "Bash(gh api *)",
+      "Bash(grep -E \"\\\\.md$|skill\\\\.ts$\")",
+      "Bash(break)",
+      "Bash(python3 *)"
+    ]
+  }
+}

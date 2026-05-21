@@ -1241,6 +1241,40 @@ img { display: block; max-width: 100%; }
   line-height: 1.45;
 }
 
+/* ── Tooltip icon ── */
+.tip-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: var(--gray-200);
+  color: var(--gray-500);
+  font-size: 9px; font-weight: 700;
+  cursor: help;
+  flex-shrink: 0;
+  font-family: var(--font-body);
+  line-height: 1;
+}
+.tip-popup {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e293b;
+  color: white;
+  font-size: 11px; font-weight: 400;
+  padding: 7px 10px;
+  border-radius: 6px;
+  width: 230px;
+  line-height: 1.45;
+  z-index: 200;
+  pointer-events: none;
+}
+.tip-icon:hover .tip-popup { display: block; }
+
 /* ── Sales chart ── */
 .chart-months {
   display: flex;
@@ -2912,102 +2946,97 @@ img { display: block; max-width: 100%; }
             </div>
           </div>
 
-          <!-- Nivel FICO -->
-          <div class="nivel-card">
-            <div class="nivel-top">
-              <div>
-                <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;text-transform:uppercase;letter-spacing:.6px">Tu nivel FICO</div>
-                <div class="nivel-badge">
-                  <span class="nivel-badge-icon">🚀</span>
-                  Impulso
+          <!-- Invoice alert indicators -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+
+            <!-- Próximas a vencer -->
+            <div class="card" style="border-left:4px solid var(--warning);background:linear-gradient(135deg,var(--warning-light) 0%,#fff 60%)">
+              <div class="card-body" style="padding:14px 16px;display:flex;align-items:center;gap:14px">
+                <div style="width:40px;height:40px;border-radius:10px;background:var(--warning-light);border:1.5px solid var(--warning-border);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                 </div>
-              </div>
-              <div class="nivel-meta">
-                <div class="nivel-meta-label">Facturado este mes</div>
-                <div class="nivel-meta-val">S/ 48,500</div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:11px;color:var(--warning);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">Próximas a vencer</div>
+                  <div style="font-size:18px;font-weight:800;color:var(--gray-800);font-family:var(--font-heading);line-height:1">S/ 24,900</div>
+                  <div style="font-size:11.5px;color:var(--gray-500);margin-top:3px">2 facturas · vencen en ≤ 7 días</div>
+                </div>
+                <button class="btn btn-sm" style="background:var(--warning-light);border:1.5px solid var(--warning-border);color:#92400e;font-size:11px;flex-shrink:0" onclick="showPanel('facturacion')">Ver</button>
               </div>
             </div>
-            <div class="nivel-progress-wrap">
-              <div class="nivel-progress-labels">
-                <span class="nivel-progress-cur">S/ 48,500</span>
-                <span class="nivel-progress-next">Meta: S/ 60,000 → 💎 Crecimiento</span>
+
+            <!-- Facturas vencidas -->
+            <div class="card" style="border-left:4px solid var(--danger);background:linear-gradient(135deg,var(--danger-light) 0%,#fff 60%)">
+              <div class="card-body" style="padding:14px 16px;display:flex;align-items:center;gap:14px">
+                <div style="width:40px;height:40px;border-radius:10px;background:var(--danger-light);border:1.5px solid var(--danger-border);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:11px;color:var(--danger);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">Facturas vencidas</div>
+                  <div style="font-size:18px;font-weight:800;color:var(--gray-800);font-family:var(--font-heading);line-height:1">S/ 9,100</div>
+                  <div style="font-size:11.5px;color:var(--gray-500);margin-top:3px">1 factura · requiere acción inmediata</div>
+                </div>
+                <button class="btn btn-sm" style="background:var(--danger-light);border:1.5px solid var(--danger-border);color:#991b1b;font-size:11px;flex-shrink:0" onclick="showPanel('facturacion')">Ver</button>
               </div>
-              <div class="nivel-bar"><div class="nivel-bar-fill" style="width:80.8%"></div></div>
-              <div class="nivel-progress-hint">Te faltan <strong>S/ 11,500</strong> para desbloquear el nivel Crecimiento</div>
             </div>
-            <div class="nivel-benefits">
-              <span class="nivel-benefit-pill">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                1 sesión de asesoría desbloqueada
-              </span>
-              <span class="nivel-benefit-pill">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                Reporte mensual PDF
-              </span>
-              <span class="nivel-benefit-pill">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                10 consultas FICO-chat
-              </span>
-              <button class="nivel-session-btn" onclick="showPanel('perfil')">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                Agendar sesión
-              </button>
-            </div>
+
           </div>
 
           <!-- Main grid: Chart + Health Score -->
           <div class="dash-grid-main">
 
-            <!-- Sales Chart -->
-            <div class="card">
+            <!-- Sales Chart: Ingresos vs Gastos -->
+            <div class="card" style="display:flex;flex-direction:column">
               <div class="card-head">
-                <span class="card-title">Evolución de ventas</span>
-                <span style="font-size:11px;color:var(--gray-400);font-weight:500;">Últimos 6 meses</span>
-              </div>
-              <div class="card-body" style="padding-bottom:12px">
-                <svg viewBox="0 0 600 170" width="100%" style="overflow:visible">
-                  <defs>
-                    <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%"   stop-color="#6366f1" stop-opacity="0.25"/>
-                      <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
-                    </linearGradient>
-                  </defs>
-                  <!-- Grid lines -->
-                  <line x1="40" y1="20"  x2="580" y2="20"  stroke="#f1f5f9" stroke-width="1"/>
-                  <line x1="40" y1="53"  x2="580" y2="53"  stroke="#f1f5f9" stroke-width="1"/>
-                  <line x1="40" y1="86"  x2="580" y2="86"  stroke="#f1f5f9" stroke-width="1"/>
-                  <line x1="40" y1="119" x2="580" y2="119" stroke="#f1f5f9" stroke-width="1"/>
-                  <line x1="40" y1="150" x2="580" y2="150" stroke="#e2e8f0" stroke-width="1"/>
-                  <!-- Y labels -->
-                  <text x="36" y="24"  text-anchor="end" font-size="9" fill="#94a3b8">50k</text>
-                  <text x="36" y="57"  text-anchor="end" font-size="9" fill="#94a3b8">44k</text>
-                  <text x="36" y="90"  text-anchor="end" font-size="9" fill="#94a3b8">38k</text>
-                  <text x="36" y="123" text-anchor="end" font-size="9" fill="#94a3b8">32k</text>
-                  <text x="36" y="154" text-anchor="end" font-size="9" fill="#94a3b8">26k</text>
-                  <!-- Area fill -->
-                  <path d="M 60,126 L 160,79 L 260,145 L 360,92 L 460,63 L 560,39 L 560,150 L 60,150 Z" fill="url(#chartGrad)"/>
-                  <!-- Line -->
-                  <path d="M 60,126 L 160,79 L 260,145 L 360,92 L 460,63 L 560,39" fill="none" stroke="#6366f1" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-                  <!-- Dots -->
-                  <circle cx="60"  cy="126" r="4" fill="#fff" stroke="#6366f1" stroke-width="2.5"/>
-                  <circle cx="160" cy="79"  r="4" fill="#fff" stroke="#6366f1" stroke-width="2.5"/>
-                  <circle cx="260" cy="145" r="4" fill="#fff" stroke="#6366f1" stroke-width="2.5"/>
-                  <circle cx="360" cy="92"  r="4" fill="#fff" stroke="#6366f1" stroke-width="2.5"/>
-                  <circle cx="460" cy="63"  r="4" fill="#fff" stroke="#6366f1" stroke-width="2.5"/>
-                  <circle cx="560" cy="39"  r="6" fill="#6366f1" stroke="#fff" stroke-width="2.5"/>
-                  <!-- Tooltip for last point -->
-                  <rect x="520" y="16" width="72" height="20" rx="4" fill="#3730a3"/>
-                  <text x="556" y="30" text-anchor="middle" font-size="10" font-weight="600" fill="white">S/ 48,500</text>
-                </svg>
-                <!-- Month labels -->
-                <div style="display:flex;justify-content:space-between;padding:0 50px 0 50px;margin-top:4px">
-                  <span style="font-size:10px;color:var(--gray-400);font-weight:500">Nov</span>
-                  <span style="font-size:10px;color:var(--gray-400);font-weight:500">Dic</span>
-                  <span style="font-size:10px;color:var(--gray-400);font-weight:500">Ene</span>
-                  <span style="font-size:10px;color:var(--gray-400);font-weight:500">Feb</span>
-                  <span style="font-size:10px;color:var(--gray-400);font-weight:500">Mar</span>
-                  <span style="font-size:10px;color:var(--gray-400);font-weight:500;color:var(--indigo-600);font-weight:700">Abr ✦</span>
+                <span class="card-title">Ingresos vs. Gastos</span>
+                <div style="display:flex;align-items:center;gap:12px">
+                  <span style="font-size:11px;color:var(--gray-500);display:flex;align-items:center;gap:4px"><svg width="10" height="10" viewBox="0 0 10 10"><rect width="10" height="10" rx="2" fill="#4ade80"/></svg>Ingresos</span>
+                  <span style="font-size:11px;color:var(--gray-500);display:flex;align-items:center;gap:4px"><svg width="10" height="10" viewBox="0 0 10 10"><rect width="10" height="10" rx="2" fill="#f87171"/></svg>Gastos</span>
                 </div>
+              </div>
+              <div class="card-body" style="flex:1;display:flex;flex-direction:column;padding-bottom:16px">
+                <svg viewBox="0 0 600 240" style="flex:1;min-height:0;width:100%;display:block">
+                  <!-- Grid lines — baseline y=225, chart height=195px, scale=195/55000 -->
+                  <line x1="50" y1="225" x2="580" y2="225" stroke="#e2e8f0" stroke-width="1"/>
+                  <line x1="50" y1="190" x2="580" y2="190" stroke="#f1f5f9" stroke-width="1"/>
+                  <line x1="50" y1="154" x2="580" y2="154" stroke="#f1f5f9" stroke-width="1"/>
+                  <line x1="50" y1="119" x2="580" y2="119" stroke="#f1f5f9" stroke-width="1"/>
+                  <line x1="50" y1="83"  x2="580" y2="83"  stroke="#f1f5f9" stroke-width="1"/>
+                  <line x1="50" y1="48"  x2="580" y2="48"  stroke="#f1f5f9" stroke-width="1"/>
+                  <!-- Y labels -->
+                  <text x="44" y="51"  text-anchor="end" font-size="9" fill="#94a3b8">50k</text>
+                  <text x="44" y="86"  text-anchor="end" font-size="9" fill="#94a3b8">40k</text>
+                  <text x="44" y="122" text-anchor="end" font-size="9" fill="#94a3b8">30k</text>
+                  <text x="44" y="157" text-anchor="end" font-size="9" fill="#94a3b8">20k</text>
+                  <text x="44" y="193" text-anchor="end" font-size="9" fill="#94a3b8">10k</text>
+                  <!-- Nov: Ing 32k h=113 y=112 | Gas 22.4k h=79 y=146 -->
+                  <rect x="67"  y="112" width="20" height="113" rx="2" fill="#4ade80"/>
+                  <rect x="93"  y="146" width="20" height="79"  rx="2" fill="#f87171"/>
+                  <!-- Dic: Ing 41.5k h=147 y=78 | Gas 28.2k h=100 y=125 -->
+                  <rect x="157" y="78"  width="20" height="147" rx="2" fill="#4ade80"/>
+                  <rect x="183" y="125" width="20" height="100" rx="2" fill="#f87171"/>
+                  <!-- Ene: Ing 28.3k h=100 y=125 | Gas 19.6k h=70 y=155 -->
+                  <rect x="247" y="125" width="20" height="100" rx="2" fill="#4ade80"/>
+                  <rect x="273" y="155" width="20" height="70"  rx="2" fill="#f87171"/>
+                  <!-- Feb: Ing 35.8k h=127 y=98 | Gas 24.5k h=87 y=138 -->
+                  <rect x="337" y="98"  width="20" height="127" rx="2" fill="#4ade80"/>
+                  <rect x="363" y="138" width="20" height="87"  rx="2" fill="#f87171"/>
+                  <!-- Mar: Ing 43.2k h=153 y=72 | Gas 29.8k h=106 y=119 -->
+                  <rect x="427" y="72"  width="20" height="153" rx="2" fill="#4ade80"/>
+                  <rect x="453" y="119" width="20" height="106" rx="2" fill="#f87171"/>
+                  <!-- Abr: Ing 48.5k h=172 y=53 | Gas 31k h=110 y=115 -->
+                  <rect x="517" y="53"  width="20" height="172" rx="2" fill="#16a34a"/>
+                  <rect x="543" y="115" width="20" height="110" rx="2" fill="#ef4444"/>
+                  <!-- Abr value label -->
+                  <rect x="490" y="28" width="82" height="20" rx="4" fill="#14532d"/>
+                  <text x="531" y="42" text-anchor="middle" font-size="10" font-weight="600" fill="white">S/ 48,500</text>
+                  <!-- X axis month labels -->
+                  <text x="90"  y="238" text-anchor="middle" font-size="10" fill="#94a3b8">Nov</text>
+                  <text x="180" y="238" text-anchor="middle" font-size="10" fill="#94a3b8">Dic</text>
+                  <text x="270" y="238" text-anchor="middle" font-size="10" fill="#94a3b8">Ene</text>
+                  <text x="360" y="238" text-anchor="middle" font-size="10" fill="#94a3b8">Feb</text>
+                  <text x="450" y="238" text-anchor="middle" font-size="10" fill="#94a3b8">Mar</text>
+                  <text x="540" y="238" text-anchor="middle" font-size="10" font-weight="700" fill="#4f46e5">Abr ✦</text>
+                </svg>
               </div>
             </div>
 
@@ -3084,13 +3113,158 @@ img { display: block; max-width: 100%; }
                   </div>
                 </div>
 
-                <div class="health-msg">
-                  Mejora tu tasa de conversión de cotizaciones para alcanzar el nivel <strong>Excelente</strong>.
-                </div>
               </div>
             </div>
 
           </div><!-- /dash-grid-main -->
+
+          <!-- Analytics grid: izq=Utilidades+Clientes apilados · der=Pie -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;align-items:start">
+
+            <!-- Columna izquierda: dos gráficos apilados -->
+            <div style="display:flex;flex-direction:column;gap:14px">
+
+              <!-- Chart: Utilidades (line) -->
+              <div class="card">
+                <div class="card-head">
+                  <span class="card-title">Utilidades</span>
+                  <span style="font-size:11px;color:var(--gray-500);display:flex;align-items:center;gap:5px"><svg width="18" height="4" viewBox="0 0 18 4"><line x1="0" y1="2" x2="18" y2="2" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/></svg>Ing. − Gastos</span>
+                </div>
+                <div class="card-body" style="padding-bottom:12px">
+                  <svg viewBox="0 0 600 165" width="100%">
+                    <defs>
+                      <linearGradient id="utilGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.18"/>
+                        <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+                      </linearGradient>
+                    </defs>
+                    <line x1="50" y1="150" x2="580" y2="150" stroke="#e2e8f0" stroke-width="1"/>
+                    <line x1="50" y1="120" x2="580" y2="120" stroke="#f1f5f9" stroke-width="1"/>
+                    <line x1="50" y1="90"  x2="580" y2="90"  stroke="#f1f5f9" stroke-width="1"/>
+                    <line x1="50" y1="60"  x2="580" y2="60"  stroke="#f1f5f9" stroke-width="1"/>
+                    <line x1="50" y1="30"  x2="580" y2="30"  stroke="#f1f5f9" stroke-width="1"/>
+                    <text x="44" y="123" text-anchor="end" font-size="9" fill="#d97706">5k</text>
+                    <text x="44" y="93"  text-anchor="end" font-size="9" fill="#d97706">10k</text>
+                    <text x="44" y="63"  text-anchor="end" font-size="9" fill="#d97706">15k</text>
+                    <text x="44" y="33"  text-anchor="end" font-size="9" fill="#d97706">20k</text>
+                    <path d="M 90,92 L 180,70 L 270,98 L 360,82 L 450,70 L 540,45 L 540,150 L 90,150 Z" fill="url(#utilGrad)"/>
+                    <path d="M 90,92 L 180,70 L 270,98 L 360,82 L 450,70 L 540,45" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+                    <circle cx="90"  cy="92" r="3.5" fill="#fff" stroke="#f59e0b" stroke-width="2"/>
+                    <circle cx="180" cy="70" r="3.5" fill="#fff" stroke="#f59e0b" stroke-width="2"/>
+                    <circle cx="270" cy="98" r="3.5" fill="#fff" stroke="#f59e0b" stroke-width="2"/>
+                    <circle cx="360" cy="82" r="3.5" fill="#fff" stroke="#f59e0b" stroke-width="2"/>
+                    <circle cx="450" cy="70" r="3.5" fill="#fff" stroke="#f59e0b" stroke-width="2"/>
+                    <circle cx="540" cy="45" r="5"   fill="#f59e0b" stroke="#fff" stroke-width="2"/>
+                    <rect x="489" y="22" width="100" height="20" rx="4" fill="#78350f"/>
+                    <text x="539" y="36" text-anchor="middle" font-size="10" font-weight="600" fill="white">S/ 17,500 util.</text>
+                    <text x="90"  y="163" text-anchor="middle" font-size="10" fill="#94a3b8">Nov</text>
+                    <text x="180" y="163" text-anchor="middle" font-size="10" fill="#94a3b8">Dic</text>
+                    <text x="270" y="163" text-anchor="middle" font-size="10" fill="#94a3b8">Ene</text>
+                    <text x="360" y="163" text-anchor="middle" font-size="10" fill="#94a3b8">Feb</text>
+                    <text x="450" y="163" text-anchor="middle" font-size="10" fill="#94a3b8">Mar</text>
+                    <text x="540" y="163" text-anchor="middle" font-size="10" font-weight="700" fill="#4f46e5">Abr ✦</text>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Chart: Clientes activos (bars) -->
+              <div class="card">
+                <div class="card-head">
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <span class="card-title">Clientes activos</span>
+                    <span class="tip-icon">?
+                      <span class="tip-popup">Empresas a las que se emitió al menos una factura en los últimos 6 meses. Refleja la base de clientes vigente, no el total histórico.</span>
+                    </span>
+                  </div>
+                  <span style="font-size:11px;color:var(--gray-500);display:flex;align-items:center;gap:4px"><svg width="10" height="10" viewBox="0 0 10 10"><rect width="10" height="10" rx="2" fill="#818cf8"/></svg>Clientes</span>
+                </div>
+                <div class="card-body" style="padding-bottom:12px">
+                  <svg viewBox="0 0 600 165" width="100%">
+                    <line x1="50" y1="150" x2="580" y2="150" stroke="#e2e8f0" stroke-width="1"/>
+                    <line x1="50" y1="120" x2="580" y2="120" stroke="#f1f5f9" stroke-width="1"/>
+                    <line x1="50" y1="90"  x2="580" y2="90"  stroke="#f1f5f9" stroke-width="1"/>
+                    <line x1="50" y1="60"  x2="580" y2="60"  stroke="#f1f5f9" stroke-width="1"/>
+                    <line x1="50" y1="30"  x2="580" y2="30"  stroke="#f1f5f9" stroke-width="1"/>
+                    <text x="44" y="123" text-anchor="end" font-size="9" fill="#818cf8">2</text>
+                    <text x="44" y="93"  text-anchor="end" font-size="9" fill="#818cf8">4</text>
+                    <text x="44" y="63"  text-anchor="end" font-size="9" fill="#818cf8">6</text>
+                    <text x="44" y="33"  text-anchor="end" font-size="9" fill="#818cf8">8</text>
+                    <rect x="76"  y="90"  width="28" height="60"  rx="3" fill="#818cf8" opacity="0.75"/>
+                    <rect x="166" y="60"  width="28" height="90"  rx="3" fill="#818cf8" opacity="0.75"/>
+                    <rect x="256" y="75"  width="28" height="75"  rx="3" fill="#818cf8" opacity="0.75"/>
+                    <rect x="346" y="60"  width="28" height="90"  rx="3" fill="#818cf8" opacity="0.75"/>
+                    <rect x="436" y="45"  width="28" height="105" rx="3" fill="#818cf8" opacity="0.75"/>
+                    <rect x="526" y="45"  width="28" height="105" rx="3" fill="#6366f1"/>
+                    <rect x="494" y="22" width="60" height="20" rx="4" fill="#3730a3"/>
+                    <text x="524" y="36" text-anchor="middle" font-size="10" font-weight="600" fill="white">7 clientes</text>
+                    <text x="90"  y="163" text-anchor="middle" font-size="10" fill="#94a3b8">Nov</text>
+                    <text x="180" y="163" text-anchor="middle" font-size="10" fill="#94a3b8">Dic</text>
+                    <text x="270" y="163" text-anchor="middle" font-size="10" fill="#94a3b8">Ene</text>
+                    <text x="360" y="163" text-anchor="middle" font-size="10" fill="#94a3b8">Feb</text>
+                    <text x="450" y="163" text-anchor="middle" font-size="10" fill="#94a3b8">Mar</text>
+                    <text x="540" y="163" text-anchor="middle" font-size="10" font-weight="700" fill="#4f46e5">Abr ✦</text>
+                  </svg>
+                </div>
+              </div>
+
+            </div><!-- /columna izquierda -->
+
+            <!-- Pie chart: Participación de clientes -->
+            <div class="card">
+              <div class="card-head">
+                <span class="card-title">Participación de clientes</span>
+                <span style="font-size:11px;color:var(--gray-400);font-weight:500">Por facturación emitida</span>
+              </div>
+              <div class="card-body" style="padding-bottom:8px">
+                <svg id="pie-svg" viewBox="0 0 300 290" width="100%"></svg>
+                <p id="pie-note" style="font-size:10.5px;color:var(--gray-400);text-align:center;margin:4px 0 0;font-style:italic">Nota: Agrupado hasta el día de hoy.</p>
+              </div>
+            </div>
+
+          </div><!-- /analytics grid -->
+
+          <!-- Tu nivel en FICO -->
+          <div class="nivel-card">
+            <div class="nivel-top">
+              <div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:4px;text-transform:uppercase;letter-spacing:.6px">Tu nivel FICO</div>
+                <div class="nivel-badge">
+                  <span class="nivel-badge-icon">🚀</span>
+                  Impulso
+                </div>
+              </div>
+              <div class="nivel-meta">
+                <div class="nivel-meta-label">Facturado este mes</div>
+                <div class="nivel-meta-val">S/ 48,500</div>
+              </div>
+            </div>
+            <div class="nivel-progress-wrap">
+              <div class="nivel-progress-labels">
+                <span class="nivel-progress-cur">S/ 48,500</span>
+                <span class="nivel-progress-next">Meta: S/ 60,000 → 💎 Crecimiento</span>
+              </div>
+              <div class="nivel-bar"><div class="nivel-bar-fill" style="width:80.8%"></div></div>
+              <div class="nivel-progress-hint">Te faltan <strong>S/ 11,500</strong> para desbloquear el nivel Crecimiento</div>
+            </div>
+            <div class="nivel-benefits">
+              <span class="nivel-benefit-pill">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                1 sesión de asesoría desbloqueada
+              </span>
+              <span class="nivel-benefit-pill">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Reporte mensual PDF
+              </span>
+              <span class="nivel-benefit-pill">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                10 consultas FICO-chat
+              </span>
+              <button class="nivel-session-btn" onclick="showPanel('perfil')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Agendar sesión
+              </button>
+            </div>
+          </div>
 
         </div><!-- /panel-dashboard -->
 
@@ -3437,43 +3611,113 @@ img { display: block; max-width: 100%; }
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td><span class="doc-num">F001-00234</span></td>
+                  <!-- ── Nov 2024 ── -->
+                  <tr data-fecha="2024-11" data-ruc="20100055235" data-monto="18900">
+                    <td><span class="doc-num">F001-00220</span></td>
+                    <td><span class="client-name">Alicorp S.A.A.</span></td>
+                    <td>05/11/2024</td>
+                    <td><strong>S/ 18,900.00</strong></td>
+                    <td><span class="badge badge-green">Aceptada</span></td>
+                    <td><button class="btn btn-secondary btn-sm">Ver</button> <button class="btn btn-secondary btn-sm" style="margin-left:4px">Descargar</button></td>
+                  </tr>
+                  <tr data-fecha="2024-11" data-ruc="20332461655" data-monto="13100">
+                    <td><span class="doc-num">F001-00221</span></td>
+                    <td><span class="client-name">Claro Perú S.A.C.</span></td>
+                    <td>22/11/2024</td>
+                    <td><strong>S/ 13,100.00</strong></td>
+                    <td><span class="badge badge-green">Aceptada</span></td>
+                    <td><button class="btn btn-secondary btn-sm">Ver</button> <button class="btn btn-secondary btn-sm" style="margin-left:4px">Descargar</button></td>
+                  </tr>
+                  <!-- ── Dic 2024 ── -->
+                  <tr data-fecha="2024-12" data-ruc="20508565934" data-monto="24600">
+                    <td><span class="doc-num">F001-00222</span></td>
+                    <td><span class="client-name">Supermercados Tottus S.A.</span></td>
+                    <td>08/12/2024</td>
+                    <td><strong>S/ 24,600.00</strong></td>
+                    <td><span class="badge badge-green">Aceptada</span></td>
+                    <td><button class="btn btn-secondary btn-sm">Ver</button> <button class="btn btn-secondary btn-sm" style="margin-left:4px">Descargar</button></td>
+                  </tr>
+                  <tr data-fecha="2024-12" data-ruc="20100130204" data-monto="16900">
+                    <td><span class="doc-num">F001-00223</span></td>
                     <td><span class="client-name">Banco Continental del Perú S.A.</span></td>
-                    <td>29/04/2025</td>
-                    <td><strong>S/ 47,260.00</strong></td>
+                    <td>19/12/2024</td>
+                    <td><strong>S/ 16,900.00</strong></td>
                     <td><span class="badge badge-green">Aceptada</span></td>
-                    <td>
-                      <button class="btn btn-secondary btn-sm">Ver</button>
-                      <button class="btn btn-secondary btn-sm" style="margin-left:4px">Descargar</button>
-                    </td>
+                    <td><button class="btn btn-secondary btn-sm">Ver</button> <button class="btn btn-secondary btn-sm" style="margin-left:4px">Descargar</button></td>
                   </tr>
-                  <tr>
-                    <td><span class="doc-num">F001-00233</span></td>
+                  <!-- ── Ene 2025 ── -->
+                  <tr data-fecha="2025-01" data-ruc="20100053455" data-monto="28300">
+                    <td><span class="doc-num">F001-00224</span></td>
                     <td><span class="client-name">Interbank S.A.</span></td>
-                    <td>24/04/2025</td>
-                    <td><strong>S/ 63,200.00</strong></td>
+                    <td>14/01/2025</td>
+                    <td><strong>S/ 28,300.00</strong></td>
                     <td><span class="badge badge-green">Aceptada</span></td>
-                    <td>
-                      <button class="btn btn-secondary btn-sm">Ver</button>
-                      <button class="btn btn-secondary btn-sm" style="margin-left:4px">Descargar</button>
-                    </td>
+                    <td><button class="btn btn-secondary btn-sm">Ver</button> <button class="btn btn-secondary btn-sm" style="margin-left:4px">Descargar</button></td>
                   </tr>
-                  <tr>
-                    <td><span class="doc-num">F001-00232</span></td>
+                  <!-- ── Feb 2025 ── -->
+                  <tr data-fecha="2025-02" data-ruc="20281415981" data-monto="21200">
+                    <td><span class="doc-num">F001-00225</span></td>
                     <td><span class="client-name">Minera Cerro Verde S.A.C.</span></td>
-                    <td>20/04/2025</td>
-                    <td><strong>S/ 28,900.00</strong></td>
-                    <td><span class="badge badge-yellow">Pendiente</span></td>
-                    <td>
-                      <button class="btn btn-secondary btn-sm">Ver</button>
-                    </td>
+                    <td>07/02/2025</td>
+                    <td><strong>S/ 21,200.00</strong></td>
+                    <td><span class="badge badge-green">Aceptada</span></td>
+                    <td><button class="btn btn-secondary btn-sm">Ver</button> <button class="btn btn-secondary btn-sm" style="margin-left:4px">Descargar</button></td>
                   </tr>
-                  <tr>
+                  <tr data-fecha="2025-02" data-ruc="20100055235" data-monto="14600">
+                    <td><span class="doc-num">F001-00226</span></td>
+                    <td><span class="client-name">Alicorp S.A.A.</span></td>
+                    <td>20/02/2025</td>
+                    <td><strong>S/ 14,600.00</strong></td>
+                    <td><span class="badge badge-green">Aceptada</span></td>
+                    <td><button class="btn btn-secondary btn-sm">Ver</button> <button class="btn btn-secondary btn-sm" style="margin-left:4px">Descargar</button></td>
+                  </tr>
+                  <!-- ── Mar 2025 ── -->
+                  <tr data-fecha="2025-03" data-ruc="20133530003" data-monto="25500">
+                    <td><span class="doc-num">F001-00227</span></td>
+                    <td><span class="client-name">Corporación Aceros Arequipa S.A.</span></td>
+                    <td>05/03/2025</td>
+                    <td><strong>S/ 25,500.00</strong></td>
+                    <td><span class="badge badge-green">Aceptada</span></td>
+                    <td><button class="btn btn-secondary btn-sm">Ver</button> <button class="btn btn-secondary btn-sm" style="margin-left:4px">Descargar</button></td>
+                  </tr>
+                  <tr data-fecha="2025-03" data-ruc="20332461655" data-monto="17700">
+                    <td><span class="doc-num">F001-00230</span></td>
+                    <td><span class="client-name">Claro Perú S.A.C.</span></td>
+                    <td>21/03/2025</td>
+                    <td><strong>S/ 17,700.00</strong></td>
+                    <td><span class="badge badge-green">Aceptada</span></td>
+                    <td><button class="btn btn-secondary btn-sm">Ver</button> <button class="btn btn-secondary btn-sm" style="margin-left:4px">Descargar</button></td>
+                  </tr>
+                  <!-- ── Abr 2025 ── -->
+                  <tr data-fecha="2025-04" data-ruc="20133530003" data-monto="5400">
                     <td><span class="doc-num">F001-00231</span></td>
                     <td><span class="client-name">Corporación Aceros Arequipa S.A.</span></td>
                     <td>15/04/2025</td>
-                    <td><strong>S/ 18,540.00</strong></td>
+                    <td><strong>S/ 5,400.00</strong></td>
+                    <td><span class="badge badge-green">Aceptada</span></td>
+                    <td><button class="btn btn-secondary btn-sm">Ver</button> <button class="btn btn-secondary btn-sm" style="margin-left:4px">Descargar</button></td>
+                  </tr>
+                  <tr data-fecha="2025-04" data-ruc="20281415981" data-monto="9100">
+                    <td><span class="doc-num">F001-00232</span></td>
+                    <td><span class="client-name">Minera Cerro Verde S.A.C.</span></td>
+                    <td>20/04/2025</td>
+                    <td><strong>S/ 9,100.00</strong></td>
+                    <td><span class="badge badge-yellow">Pendiente</span></td>
+                    <td><button class="btn btn-secondary btn-sm">Ver</button></td>
+                  </tr>
+                  <tr data-fecha="2025-04" data-ruc="20100053455" data-monto="15800">
+                    <td><span class="doc-num">F001-00233</span></td>
+                    <td><span class="client-name">Interbank S.A.</span></td>
+                    <td>24/04/2025</td>
+                    <td><strong>S/ 15,800.00</strong></td>
+                    <td><span class="badge badge-green">Aceptada</span></td>
+                    <td><button class="btn btn-secondary btn-sm">Ver</button> <button class="btn btn-secondary btn-sm" style="margin-left:4px">Descargar</button></td>
+                  </tr>
+                  <tr data-fecha="2025-04" data-ruc="20100130204" data-monto="18200">
+                    <td><span class="doc-num">F001-00234</span></td>
+                    <td><span class="client-name">Banco Continental del Perú S.A.</span></td>
+                    <td>29/04/2025</td>
+                    <td><strong>S/ 18,200.00</strong></td>
                     <td><span class="badge badge-green">Aceptada</span></td>
                     <td>
                       <button class="btn btn-secondary btn-sm">Ver</button>
@@ -3511,7 +3755,7 @@ img { display: block; max-width: 100%; }
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr data-fecha="2025-04">
                     <td><span class="doc-num">T001-00089</span></td>
                     <td><span class="client-name">Supermercados Tottus S.A.</span></td>
                     <td>29/04/2025</td>
@@ -3520,7 +3764,7 @@ img { display: block; max-width: 100%; }
                     <td><span class="badge badge-green">Aceptada</span></td>
                     <td><button class="btn btn-secondary btn-sm">Ver</button></td>
                   </tr>
-                  <tr>
+                  <tr data-fecha="2025-04">
                     <td><span class="doc-num">T001-00088</span></td>
                     <td><span class="client-name">Alicorp S.A.A.</span></td>
                     <td>20/04/2025</td>
@@ -3560,7 +3804,7 @@ img { display: block; max-width: 100%; }
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr data-fecha="2025-04">
                     <td><span class="doc-num">NC-001-00012</span></td>
                     <td><span class="badge badge-blue">Crédito</span></td>
                     <td style="color:var(--indigo-600);font-weight:600">F001-00229</td>
@@ -3569,7 +3813,7 @@ img { display: block; max-width: 100%; }
                     <td><span class="badge badge-green">Aceptada</span></td>
                     <td><button class="btn btn-secondary btn-sm">Ver</button></td>
                   </tr>
-                  <tr>
+                  <tr data-fecha="2025-04">
                     <td><span class="doc-num">ND-001-00003</span></td>
                     <td><span class="badge badge-indigo">Débito</span></td>
                     <td style="color:var(--indigo-600);font-weight:600">F001-00228</td>
@@ -6076,9 +6320,9 @@ function applyFactFilters() {
     let visible = true;
 
     /* Date range filter (only for rows that carry data-fecha) */
-    if (fecha && desde) {
-      const efectivoHasta = hasta || desde;
-      if (fecha < desde || fecha > efectivoHasta) visible = false;
+    if (fecha && (desde || hasta)) {
+      if (desde && fecha < desde) visible = false;
+      if (hasta && fecha > hasta) visible = false;
     }
 
     /* Client filter */
@@ -6102,6 +6346,8 @@ function applyFactFilters() {
   }
   if (cliente) addFactChip(chips, cliente,
     () => { document.getElementById('ff-cliente').value = ''; applyFactFilters(); });
+
+  renderPieChart();
 }
 
 function addFactChip(container, label, onRemove) {
@@ -6119,6 +6365,92 @@ function clearFactFilters() {
   document.getElementById('ff-hasta-ano').value = '';
   document.getElementById('ff-cliente').value   = '';
   applyFactFilters();
+}
+
+/* ── Pie chart: participación de clientes ── */
+function renderPieChart() {
+  const svg = document.getElementById('pie-svg');
+  if (!svg) return;
+  const NS = 'http://www.w3.org/2000/svg';
+  const el = (tag, attrs, txt) => {
+    const e = document.createElementNS(NS, tag);
+    Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v));
+    if (txt !== undefined) e.textContent = txt;
+    return e;
+  };
+  svg.innerHTML = '';
+
+  /* Collect visible facturas rows */
+  const groups = {};
+  document.querySelectorAll('#tab-facturas tbody tr').forEach(row => {
+    if (row.style.display === 'none') return;
+    const ruc   = row.getAttribute('data-ruc');
+    const monto = parseFloat(row.getAttribute('data-monto') || '0');
+    if (!ruc || !monto) return;
+    const name = row.querySelector('.client-name')?.textContent?.trim() || ruc;
+    if (!groups[ruc]) groups[ruc] = { name, amount: 0 };
+    groups[ruc].amount += monto;
+  });
+
+  const data  = Object.values(groups).sort((a, b) => b.amount - a.amount);
+  const total = data.reduce((s, d) => s + d.amount, 0);
+
+  /* Update pie note */
+  const noteEl = document.getElementById('pie-note');
+  if (noteEl) {
+    const desdeM = document.getElementById('ff-desde-mes')?.value;
+    const desdeA = document.getElementById('ff-desde-ano')?.value;
+    const hastaM = document.getElementById('ff-hasta-mes')?.value;
+    const hastaA = document.getElementById('ff-hasta-ano')?.value;
+    const mesNames = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Setiembre','Octubre','Noviembre','Diciembre'];
+    if (desdeM && desdeA && !hastaM) {
+      noteEl.textContent = 'Nota: Información correspondiente al mes de ' + mesNames[parseInt(desdeM)] + ' ' + desdeA + '.';
+    } else if (desdeM && desdeA && hastaM && hastaA && desdeM === hastaM && desdeA === hastaA) {
+      noteEl.textContent = 'Nota: Información correspondiente al mes de ' + mesNames[parseInt(desdeM)] + ' ' + desdeA + '.';
+    } else if (desdeM || hastaM) {
+      const from = desdeM ? mesNames[parseInt(desdeM)] + ' ' + (desdeA||'') : '';
+      const to   = hastaM ? mesNames[parseInt(hastaM)] + ' ' + (hastaA||'') : '';
+      noteEl.textContent = 'Nota: Información del período ' + (from ? from + (to ? ' – ' + to : '') : to) + '.';
+    } else {
+      noteEl.textContent = 'Nota: Agrupado hasta el día de hoy.';
+    }
+  }
+
+  if (!data.length || !total) {
+    svg.appendChild(el('text', { x: 150, y: 130, 'text-anchor': 'middle', 'font-size': 12, fill: '#94a3b8', 'font-family': 'Outfit,sans-serif' }, 'Sin datos para el período seleccionado'));
+    return;
+  }
+
+  const COLORS = ['#6366f1','#22c55e','#f59e0b','#f87171','#06b6d4','#a78bfa','#fb923c'];
+  const cx = 95, cy = 100, R = 72, r = 43;
+
+  /* Donut slices */
+  let angle = -Math.PI / 2;
+  data.forEach((item, i) => {
+    const sweep = (item.amount / total) * 2 * Math.PI;
+    const end   = angle + sweep;
+    const large = sweep > Math.PI ? 1 : 0;
+    const [c0, s0, c1, s1] = [Math.cos(angle), Math.sin(angle), Math.cos(end), Math.sin(end)];
+    const fmt = n => n.toFixed(1);
+    const d = `M ${fmt(cx+r*c0)},${fmt(cy+r*s0)} L ${fmt(cx+R*c0)},${fmt(cy+R*s0)} A ${R},${R} 0 ${large},1 ${fmt(cx+R*c1)},${fmt(cy+R*s1)} L ${fmt(cx+r*c1)},${fmt(cy+r*s1)} A ${r},${r} 0 ${large},0 ${fmt(cx+r*c0)},${fmt(cy+r*s0)} Z`;
+    svg.appendChild(el('path', { d, fill: COLORS[i % COLORS.length] }));
+    angle = end;
+  });
+
+  /* Center text */
+  svg.appendChild(el('text', { x: cx, y: cy - 8, 'text-anchor': 'middle', 'font-size': 9, fill: '#94a3b8', 'font-family': 'Outfit,sans-serif' }, 'Total'));
+  svg.appendChild(el('text', { x: cx, y: cy + 9, 'text-anchor': 'middle', 'font-size': 15, 'font-weight': 700, fill: '#1e293b', 'font-family': 'Outfit,sans-serif' }, 'S/ ' + (total/1000).toFixed(0) + 'k'));
+
+  /* Legend — right side */
+  const lx = 178, ly0 = 12, dy = 26;
+  data.forEach((item, i) => {
+    const ly = ly0 + i * dy;
+    const pct = ((item.amount / total) * 100).toFixed(1);
+    const short = item.name.length > 20 ? item.name.slice(0, 19) + '…' : item.name;
+    svg.appendChild(el('rect',  { x: lx, y: ly, width: 10, height: 10, rx: 2, fill: COLORS[i % COLORS.length] }));
+    svg.appendChild(el('text',  { x: lx+14, y: ly+9,  'font-size': 10, fill: '#374151', 'font-family': 'Outfit,sans-serif' }, short));
+    svg.appendChild(el('text',  { x: lx+14, y: ly+20, 'font-size': 9,  fill: '#94a3b8', 'font-family': 'Outfit,sans-serif' }, 'S/ ' + item.amount.toLocaleString('es-PE') + '  ·  ' + pct + '%'));
+  });
 }
 
 /* ── Email modal ── */
@@ -6673,6 +7005,9 @@ function positionTutStep(step) {
   card.style.left = left + 'px';
   card.style.top  = top  + 'px';
 }
+
+/* Init pie chart on page load */
+document.addEventListener('DOMContentLoaded', renderPieChart);
 
 </script>
 
